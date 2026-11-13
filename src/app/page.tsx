@@ -50,8 +50,12 @@ export default function Home() {
   
   const [errors, setErrors] = useState({ name: '', email: '', track: '' });
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isTrackOpen, setIsTrackOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false); // Animation ya Page
 
   useEffect(() => {
+    setMounted(true);
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') setIsDarkMode(false);
     else setIsDarkMode(true);
@@ -127,6 +131,7 @@ export default function Home() {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setIsMobileMenuOpen(false);
   };
 
   const faqs = [
@@ -149,14 +154,14 @@ export default function Home() {
   ];
 
   return (
-    <main className={`min-h-screen font-sans antialiased overflow-x-hidden selection:bg-blue-500/30 relative scroll-smooth transition-colors duration-500 ${isDarkMode ? 'bg-[#030712] text-slate-100 selection:text-blue-200' : 'bg-slate-50 text-slate-900 selection:text-blue-900'}`}>
+    <main className={`min-h-screen font-sans antialiased overflow-x-hidden selection:bg-blue-500/30 relative scroll-smooth transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} ${isDarkMode ? 'bg-[#030712] text-slate-100 selection:text-blue-200' : 'bg-slate-50 text-slate-900 selection:text-blue-900'}`}>
       
       {/* BACKGROUND ORBS */}
       <div className={`absolute top-0 left-1/4 w-[300px] md:w-[800px] h-[300px] md:h-[800px] rounded-full blur-[100px] md:blur-[140px] pointer-events-none transition-colors duration-500 ${isDarkMode ? 'bg-gradient-to-tr from-blue-600/10 to-indigo-500/0' : 'bg-gradient-to-tr from-blue-400/20 to-indigo-500/0'}`} />
       <div className={`absolute bottom-10 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full blur-[80px] md:blur-[120px] pointer-events-none transition-colors duration-500 ${isDarkMode ? 'bg-gradient-to-br from-emerald-500/5 to-teal-500/0' : 'bg-gradient-to-br from-emerald-400/20 to-teal-500/0'}`} />
 
       {/* NAVBAR */}
-      <nav className={`fixed top-0 left-0 right-0 h-16 md:h-20 z-50 px-4 md:px-12 flex items-center justify-between transition-all duration-300 ${scrolled ? (isDarkMode ? 'bg-[#030712]/90 backdrop-blur-xl border-b border-slate-800 shadow-lg' : 'bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm') : 'bg-transparent border-b border-transparent'}`}>
+      <nav className={`fixed top-0 left-0 right-0 h-16 md:h-20 z-50 px-4 md:px-12 flex items-center justify-between transition-all duration-300 ${scrolled || isMobileMenuOpen ? (isDarkMode ? 'bg-[#030712]/90 backdrop-blur-xl border-b border-slate-800 shadow-lg' : 'bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm') : 'bg-transparent border-b border-transparent'}`}>
         <div className="flex items-center gap-2 md:gap-3 group cursor-pointer" onClick={(e) => handleNavClick(e as any, 'about')}>
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-black text-sm md:text-lg tracking-wider shadow-lg shadow-blue-500/20 group-hover:scale-105 transition duration-300 text-white">
             AY
@@ -166,6 +171,7 @@ export default function Home() {
           </span>
         </div>
         
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium">
           <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`transition duration-200 ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}>About</a>
           <a href="#labs" onClick={(e) => handleNavClick(e, 'labs')} className={`transition duration-200 ${isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}>Innovation Hubs</a>
@@ -184,15 +190,56 @@ export default function Home() {
           </a>
         </div>
 
+        {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 md:hidden">
           <button onClick={toggleTheme} className={`p-2 rounded-lg border ${isDarkMode ? 'bg-slate-800 border-slate-700 text-yellow-400' : 'bg-slate-100 border-slate-300 text-slate-800'}`}>
              {isDarkMode ? '☀️' : '🌙'}
           </button>
-          <a href="#join" onClick={(e) => handleNavClick(e, 'join')} className="bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">
-            Apply
-          </a>
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={`p-2 rounded-lg border ${isDarkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-100 border-slate-300 text-slate-900'}`}>
+            {isMobileMenuOpen ? '✕' : '☰'}
+          </button>
         </div>
       </nav>
+
+      {/* MOBILE MENU DROPDOWN (Nshya, nka Portofolio, ntabwo ni fullscreen) */}
+      {isMobileMenuOpen && (
+        <div className={`fixed top-16 left-4 right-4 z-40 p-4 rounded-2xl shadow-2xl border transition-all duration-300 ${isDarkMode ? 'bg-[#0b0f19] border-slate-800' : 'bg-white border-slate-200'}`}>
+          
+          {/* User Info (Nka kuri portofolio) */}
+          <div className={`flex items-center gap-3 p-3 rounded-xl mb-4 ${isDarkMode ? 'bg-blue-600' : 'bg-blue-500 text-white'}`}>
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold text-white">
+              AY
+            </div>
+            <div>
+              <h3 className="font-bold text-sm">AfriYouth Labs</h3>
+              <p className="text-xs opacity-80">Innovation Hub</p>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex flex-col gap-1">
+            <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`flex items-center justify-between p-3 rounded-lg text-sm font-medium ${isDarkMode ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-100 text-slate-700'}`}>
+              <span>About</span>
+              <span className="text-blue-500">&rarr;</span>
+            </a>
+            <a href="#labs" onClick={(e) => handleNavClick(e, 'labs')} className={`flex items-center justify-between p-3 rounded-lg text-sm font-medium ${isDarkMode ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-100 text-slate-700'}`}>
+              <span>Innovation Hubs</span>
+              <span className="text-blue-500">&rarr;</span>
+            </a>
+            <a href="#faq" onClick={(e) => handleNavClick(e, 'faq')} className={`flex items-center justify-between p-3 rounded-lg text-sm font-medium ${isDarkMode ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-100 text-slate-700'}`}>
+              <span>FAQ</span>
+              <span className="text-blue-500">&rarr;</span>
+            </a>
+          </div>
+
+          {/* Apply Button */}
+          <div className="mt-4">
+            <a href="#join" onClick={(e) => handleNavClick(e, 'join')} className="block w-full py-3 text-center bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition-colors">
+              Apply Now
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* HERO SECTION */}
       <section id="about" className="relative min-h-screen flex items-center justify-center px-4 md:px-6 text-center pt-20 md:pt-24 scroll-mt-24">
@@ -378,20 +425,35 @@ export default function Home() {
               <div>
                 <label htmlFor="track" className={`block text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1.5 md:mb-2 ml-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Select Innovation Track</label>
                 <div className="relative">
-                  <select 
-                    id="track" 
-                    name="track"
-                    value={formData.track} 
-                    onChange={(e) => setFormData({ ...formData, track: e.target.value })} 
-                    className={`w-full border rounded-lg md:rounded-xl px-4 py-3 md:py-4 text-sm md:text-base focus:outline-none transition-all appearance-none cursor-pointer pr-10 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ${errors.track ? '!border-red-500' : ''} ${isDarkMode ? '!bg-[#030712] !text-slate-300 border-slate-800' : '!bg-slate-50 !text-slate-900 border-slate-300'}`}
-                    style={{ backgroundColor: isDarkMode ? '#030712' : '#f8fafc', color: isDarkMode ? '#cbd5e1' : '#0f172a' }}
+                  <button
+                    type="button"
+                    onClick={() => setIsTrackOpen(!isTrackOpen)}
+                    className={`w-full border rounded-lg md:rounded-xl px-4 py-3 md:py-4 text-sm md:text-base focus:outline-none transition-all text-left flex items-center justify-between ${errors.track ? '!border-red-500' : ''} ${isDarkMode ? '!bg-[#030712] !text-slate-300 border-slate-800' : '!bg-slate-50 !text-slate-900 border-slate-300'}`}
                   >
-                    <option value="" disabled style={{ backgroundColor: isDarkMode ? '#030712' : '#f8fafc', color: isDarkMode ? '#cbd5e1' : '#0f172a' }}>-- Choose sector --</option>
-                    <option value="coding" style={{ backgroundColor: isDarkMode ? '#030712' : '#f8fafc', color: isDarkMode ? '#cbd5e1' : '#0f172a' }}>Advanced Coding Lab</option>
-                    <option value="design" style={{ backgroundColor: isDarkMode ? '#030712' : '#f8fafc', color: isDarkMode ? '#cbd5e1' : '#0f172a' }}>High-Fidelity UI Studio</option>
-                    <option value="incubation" style={{ backgroundColor: isDarkMode ? '#030712' : '#f8fafc', color: isDarkMode ? '#cbd5e1' : '#0f172a' }}>Incubation Core</option>
-                  </select>
-                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs">▼</span>
+                    <span>{formData.track ? (formData.track === 'coding' ? 'Advanced Coding Lab' : formData.track === 'design' ? 'High-Fidelity UI Studio' : 'Incubation Core') : '-- Choose sector --'}</span>
+                    <span className="text-slate-500 text-xs">▼</span>
+                  </button>
+                  {isTrackOpen && (
+                    <div className={`absolute z-50 w-full mt-1 rounded-lg border shadow-xl overflow-hidden ${isDarkMode ? 'bg-[#030712] border-slate-800' : 'bg-white border-slate-200'}`}>
+                      {[
+                        { value: 'coding', label: 'Advanced Coding Lab' },
+                        { value: 'design', label: 'High-Fidelity UI Studio' },
+                        { value: 'incubation', label: 'Incubation Core' },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, track: option.value });
+                            setIsTrackOpen(false);
+                          }}
+                          className={`w-full text-left px-4 py-3 text-sm md:text-base transition-colors ${isDarkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-900 hover:bg-slate-100'} ${formData.track === option.value ? (isDarkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-900') : ''}`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {errors.track && <p className="text-red-500 text-xs mt-1 ml-1">{errors.track}</p>}
               </div>
