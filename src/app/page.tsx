@@ -52,7 +52,7 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isTrackOpen, setIsTrackOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false); // Animation ya Page
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -201,11 +201,10 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* MOBILE MENU DROPDOWN (Nshya, nka Portofolio, ntabwo ni fullscreen) */}
+      {/* MOBILE MENU DROPDOWN */}
       {isMobileMenuOpen && (
         <div className={`fixed top-16 left-4 right-4 z-40 p-4 rounded-2xl shadow-2xl border transition-all duration-300 ${isDarkMode ? 'bg-[#0b0f19] border-slate-800' : 'bg-white border-slate-200'}`}>
           
-          {/* User Info (Nka kuri portofolio) */}
           <div className={`flex items-center gap-3 p-3 rounded-xl mb-4 ${isDarkMode ? 'bg-blue-600' : 'bg-blue-500 text-white'}`}>
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold text-white">
               AY
@@ -216,7 +215,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Navigation Links */}
           <div className="flex flex-col gap-1">
             <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`flex items-center justify-between p-3 rounded-lg text-sm font-medium ${isDarkMode ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-100 text-slate-700'}`}>
               <span>About</span>
@@ -232,7 +230,6 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Apply Button */}
           <div className="mt-4">
             <a href="#join" onClick={(e) => handleNavClick(e, 'join')} className="block w-full py-3 text-center bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition-colors">
               Apply Now
@@ -244,23 +241,23 @@ export default function Home() {
       {/* HERO SECTION */}
       <section id="about" className="relative min-h-screen flex items-center justify-center px-4 md:px-6 text-center pt-20 md:pt-24 scroll-mt-24">
         <div className="max-w-4xl mx-auto z-10 relative">
-          <span className={`inline-flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-full text-[10px] md:text-xs font-semibold tracking-wider uppercase mb-6 md:mb-8 shadow-inner border ${isDarkMode ? 'bg-slate-900/90 border-slate-800 text-slate-300' : 'bg-white border-slate-200 text-slate-600'}`}>
+          <span className={`inline-flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-full text-[10px] md:text-xs font-semibold tracking-wider uppercase mb-6 md:mb-8 shadow-inner border animate-fade-in-up ${isDarkMode ? 'bg-slate-900/90 border-slate-800 text-slate-300' : 'bg-white border-slate-200 text-slate-600'}`}>
             <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-400 animate-pulse" />
             Shaping Africa&apos;s Digital Frontier
           </span>
 
-          <h1 className={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 md:mb-8 leading-[1.1] ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+          <h1 className={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 md:mb-8 leading-[1.1] animate-fade-in-up ${isDarkMode ? 'text-white' : 'text-slate-900'}`} style={{ animationDelay: '0.1s' }}>
             Empowering Youth Through{' '}
             <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 bg-clip-text text-transparent">
               Next-Gen Tech
             </span>
           </h1>
 
-          <p className={`text-base md:text-xl max-w-3xl mx-auto mb-8 md:mb-12 font-normal leading-relaxed px-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+          <p className={`text-base md:text-xl max-w-3xl mx-auto mb-8 md:mb-12 font-normal leading-relaxed px-2 animate-fade-in-up ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`} style={{ animationDelay: '0.2s' }}>
             Welcome to AfriYouth Innovation Labs. We equip visionary minds across the continent with modern engineering skillsets, professional frameworks, and acceleration structures to build scalable global solutions.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5 px-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5 px-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <a href="#labs" onClick={(e) => handleNavClick(e, 'labs')} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 md:px-8 py-3.5 md:py-4 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all duration-300 hover:-translate-y-1 text-sm md:text-base flex items-center justify-center gap-2">
               Explore Innovation Hubs <span>&darr;</span>
             </a>
@@ -268,6 +265,12 @@ export default function Home() {
               Join Cohort 2026
             </a>
           </div>
+        </div>
+
+        {/* Scroll Down Indicator */}
+        <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center gap-1 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+          <span className="text-xs uppercase tracking-widest">Scroll</span>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </div>
       </section>
 
@@ -319,7 +322,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8 px-4 md:px-0">
           {/* Card 1: Coding */}
-          <Link href="/labs/advanced-coding-lab" className={`group relative border p-6 md:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden ${isDarkMode ? 'bg-[#0b0f19]/40 border-slate-800 hover:border-blue-500/30 hover:bg-[#0b0f19]/80' : 'bg-white border-slate-200 hover:border-blue-500/50 hover:shadow-xl'}`}>
+          <Link href="/labs/advanced-coding-lab" className={`group relative border p-6 md:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden ${isDarkMode ? 'bg-[#0b0f19]/40 border-slate-800 hover:border-blue-500/30 hover:bg-[#0b0f19]/80 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]' : 'bg-white border-slate-200 hover:border-blue-500/50 hover:shadow-xl'}`}>
             <div className="relative w-full h-40 mb-6 rounded-xl overflow-hidden">
               <Image src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop" alt="Advanced Coding Lab" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
@@ -332,7 +335,7 @@ export default function Home() {
           </Link>
 
           {/* Card 2: Design */}
-          <Link href="/labs/high-fidelity-studio" className={`group relative border p-6 md:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden ${isDarkMode ? 'bg-[#0b0f19]/40 border-slate-800 hover:border-emerald-500/30 hover:bg-[#0b0f19]/80' : 'bg-white border-slate-200 hover:border-emerald-500/50 hover:shadow-xl'}`}>
+          <Link href="/labs/high-fidelity-studio" className={`group relative border p-6 md:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden ${isDarkMode ? 'bg-[#0b0f19]/40 border-slate-800 hover:border-emerald-500/30 hover:bg-[#0b0f19]/80 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)]' : 'bg-white border-slate-200 hover:border-emerald-500/50 hover:shadow-xl'}`}>
             <div className="relative w-full h-40 mb-6 rounded-xl overflow-hidden">
               <Image src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=1000&auto=format&fit=crop" alt="High-Fidelity Studio" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
@@ -344,8 +347,8 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Card 3: Business (Ifoto yahinduwe) */}
-          <Link href="/labs/incubation-business" className={`group relative border p-6 md:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden ${isDarkMode ? 'bg-[#0b0f19]/40 border-slate-800 hover:border-indigo-500/30 hover:bg-[#0b0f19]/80' : 'bg-white border-slate-200 hover:border-indigo-500/50 hover:shadow-xl'}`}>
+          {/* Card 3: Business */}
+          <Link href="/labs/incubation-business" className={`group relative border p-6 md:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden ${isDarkMode ? 'bg-[#0b0f19]/40 border-slate-800 hover:border-indigo-500/30 hover:bg-[#0b0f19]/80 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)]' : 'bg-white border-slate-200 hover:border-indigo-500/50 hover:shadow-xl'}`}>
             <div className="relative w-full h-40 mb-6 rounded-xl overflow-hidden">
               <Image src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop" alt="Incubation & Business" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
